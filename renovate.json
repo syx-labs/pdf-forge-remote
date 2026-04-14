@@ -1,0 +1,66 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "description": "Renovate config for syx-labs repos - Bun + TypeScript + Next.js projects",
+  "timezone": "America/Sao_Paulo",
+  "schedule": ["before 8am on Monday"],
+  "commitPrefix": "chore(deps): ",
+  "labels": ["dependencies", "renovate"],
+  "rebaseWhen": "behind-base-branch",
+  "assignees": [],
+  "reviewers": [],
+  "automerge": false,
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
+  "separateMajorMinor": true,
+  "separateMinorPatch": false,
+  "packageRules": [
+    {
+      "description": "Automerge devDependencies only",
+      "matchTypes": ["devDependency"],
+      "automerge": true,
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Pin Bun version using bun version datasource",
+      "matchDatasources": ["npm"],
+      "matchPackageNames": ["bun"],
+      "pinVersion": "false",
+      "force": {
+        "commitMessageExtra": "to {{newVersion}}"
+      }
+    },
+    {
+      "description": "Group all @types packages",
+      "matchPackagePatterns": ["^@types/"],
+      "groupName": "types"
+    },
+    {
+      "description": "Group all eslint packages",
+      "matchPackagePatterns": ["^eslint"],
+      "groupName": "eslint"
+    },
+    {
+      "description": "Security updates - patch automatically for security vulns",
+      "matchUpdateTypes": ["security"],
+      "automerge": true,
+      "labels": ["dependencies", "renovate", "security"]
+    },
+    {
+      "description": "Group all Next.js related packages",
+      "matchPackagePatterns": ["^next", "^@next/"],
+      "groupName": "nextjs",
+      "schedule": ["before 8am on Monday"]
+    }
+  ],
+  "bun": {
+    "enabled": true
+  },
+  "workarounds": [
+    {
+      "description": "Handle bun.lockb lock file",
+      "matchFileNames": ["bun.lockb"],
+      "enabled": true
+    }
+  ]
+}
